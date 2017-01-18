@@ -31,43 +31,36 @@ public class HttpManage
     public final String loginUrl = host + "/v2/user_auth";
     public final String forgetUrl = host + "/v2/user/password/forgot";
     //.管理员（用户）获取所有设备分享请求列表
-    public final String shareListUrl = host + "/v2/share/device/list";
-    public final String getUserInfoUrl = host + "/v2/user/{user_id}";
+    public final String shareListUrl = host + "/v2/share/device/list?Access-Token={access_token}";
+    public final String getUserInfoUrl = host + "/v2/user/{user_id}?Access-Token={access_token}";
     //获取某个用户绑定的设备列表。
-    public final String subscribeListUrl = host + "/v2/user/%d/subscribe/devices";
-    // public final String subscribeListUrl = host + "/v2/user/%d/subscribe/devices?version=%d";
+    public final String subscribeListUrl = host + "/v2/user/{user_id}/subscribe/devices";
     //设备管理员分享设备给指定用户
-    public final String shareDeviceUrl = host + "/v2/share/device";
+    public final String shareDeviceUrl = host + "/v2/share/device?Access-Token={access_token}";
     //用户拒绝设备分享
-    public final String denyShareUrl = host + "/v2/share/device/deny";
+    public final String denyShareUrl = host + "/v2/share/device/deny?Access_Token={access_token}";
     //用户确认设备分享
-    public final String acceptShareUrl = host + "/v2/share/device/accept";
+    public final String acceptShareUrl = host + "/v2/share/device/accept?Access_Token={access_token}";
     //获取设备信息
-    public final String getDeviceUrl = host + "/v2/product/{product_id}/device/{device_id}";
+    public final String getDeviceUrl = host + "/v2/product/{product_id}/device/{device_id}?Access_Token={access_token}";
     //订阅设备（待定）
-    public final String subscribeUrl = host + "/v2/user/{user_id}/subscribe";
+    public final String subscribeUrl = host + "/v2/user/{user_id}/subscribe?Access-Token={access_token}";
     //修改用户信息
-    public final String modifyUserUrl = host + "/v2/user/{user_id}";
+    public final String modifyUserUrl = host + "/v2/user/{user_id}?Access-Token={access_token}";
     //重置密码
-    public final String resetPasswordUrl = host + "/v2/user/password/reset";
+    public final String resetPasswordUrl = host + "/v2/user/password/reset?Access-Token={access_token}";
     //获取数据端点列表
-    public final String getDatapointsUrl = host + "/v2/product/{product_id}/datapoints";
+    public final String getDatapointsUrl = host + "/v2/product/{product_id}/datapoints?Access-Token={access_token}";
     //取消订阅设备
-    public final String unsubscribeUrl = host + "/v2/user/{user_id}/unsubscribe";
+    public final String unsubscribeUrl = host + "/v2/user/{user_id}/unsubscribe?Access-Token={access_token}";
 
     //.管理员或用户删除这条分享记录
-    public final String deleteShareUrl = host + "/v2/share/device/delete/{invite_code}";
+    public final String deleteShareUrl = host + "/v2/share/device/delete/{invite_code}?Access-Token={access_token}";
 
     //检查固件版本
-    //    public final String checkUpdateUrl = host + "/v1/user/device/version";
     public final String checkUpdateUrl = "http://app.xlink.cn/v1/user/device/version";
     //固件升级
-    //    public final String upgradeUrl = host + "/v1/user/device/version";
     public final String upgradeUrl = "http://app.xlink.cn/v1/user/device/upgrade";
-
-    private HttpManage ()
-    {
-    }
 
     public static final HttpManage getInstance ()
     {
@@ -92,8 +85,180 @@ public class HttpManage
         post(registerUrl, params, callback);
     }
 
+    /**
+     * http 邮箱登录接口
+     *
+     * @param mail 用户 邮箱
+     * @param pwd  密码
+     */
+    public void login(String mail, String pwd, final Callback callback)
+    {
+        Map<String, String> params = new HashMap<>();
+        params.put("email", mail);
+        params.put("corp_id", COMPANY_ID);
+        params.put("password", pwd);
+        post(loginUrl, params, callback);
+    }
 
+    /**
+     * http //.管理员（用户）获取所有设备分享请求列表
+     */
+    public void getShareList(String access_token, final Callback callback) {
+        String url = shareListUrl.replace( "{access_token}", access_token );
+        get(url, callback);
+    }
 
+    /**
+     * 获取用户详细信息
+     */
+    public void getUserInfo(int userId, String access_token, final Callback callback)
+    {
+        String url = getUserInfoUrl.replace("{user_id}", userId + "").replace( "{access_token}", access_token );
+        get(url, callback);
+    }
+
+    /**
+     * .修改用户信息
+     *
+     * @param userId userId
+     */
+    public void modifyUser(int userId, String nickname, String access_token, final Callback callback) {
+        String url = modifyUserUrl.replace("{user_id}", userId + "").replace( "{access_token}", access_token );
+        Map<String, String> params = new HashMap<>();
+        params.put("nickname", nickname);
+        put(url, params, callback);
+    }
+
+    /**
+     * http 忘记密码
+     *
+     * @param mail 用户 邮箱
+     */
+    public void forgetPasswd(String mail, final Callback callback)
+    {
+        Map<String, String> params = new HashMap<>();
+        params.put("email", mail);
+        params.put("corp_id", COMPANY_ID);
+        post(forgetUrl, params, callback);
+    }
+
+    /**
+     * .重置密码
+     */
+    public void resetPassword(String newPasswd, String oldPasswd, String access_token, final Callback callback) {
+        Map<String, String> params = new HashMap<>();
+        params.put("old_password", oldPasswd);
+        params.put("new_password", newPasswd);
+        String url = resetPasswordUrl.replace( "{access_token}", access_token );
+        put(url, params, callback);
+    }
+
+    /**
+     * 获取数据端点信息
+     */
+    public void getDatapoints(String pid, String access_token, final Callback callback)
+    {
+        String url = getDatapointsUrl.replace("{product_id}", pid).replace( "{access_token}", access_token );
+        get(url, callback);
+    }
+
+    /**
+     * 设备管理员分享设备给指定用户
+     *
+     * @param mail 用户 邮箱
+     */
+    public void shareDevice(String mail, int deviceId, String access_token, final Callback callback)
+    {
+        Map<String, String> params = new HashMap<>();
+        params.put("user", mail);
+        params.put("expire", "7200");
+        params.put("mode", "email");
+        params.put("device_id", deviceId + "");
+        String url = shareDeviceUrl.replace( "{access_token}", access_token );
+        post(url, params, callback);
+    }
+
+    /**
+     * 用户接受设备分享
+     *
+     * @param inviteCode 分享ID
+     */
+    public void acceptShare (String inviteCode, String access_token, final Callback callback )
+    {
+        Map<String, String> params = new HashMap<>();
+        params.put("invite_code", inviteCode);
+        String url = acceptShareUrl.replace( "{access_token}", access_token  );
+        post(url, params, callback);
+    }
+
+    /**
+     * 用户拒绝设备分享
+     *
+     * @param inviteCode 分享ID
+     */
+    public void denyShare(String inviteCode, String access_token, final Callback callback)
+    {
+        Map<String, String> params = new HashMap<>();
+        params.put("invite_code", inviteCode);
+        String url = denyShareUrl.replace( "{access_token}", access_token );
+        post(denyShareUrl, params, callback);
+    }
+
+    /**
+     * 订阅设备
+     *
+     * @param userId userId
+     */
+    public void subscribe(String userId, String productId, int deviceId, String access_token, final Callback callback)
+    {
+        String url = subscribeUrl.replace("{user_id}", userId).replace( "{access_token}", access_token );
+        Map<String, String> params = new HashMap<>();
+        params.put("product_id", productId);
+        params.put("device_id", deviceId + "");
+        post(url, params, callback);
+    }
+
+    /**
+     * 取消订阅设备
+     *
+     * @param userId userId
+     */
+    public void unsubscribe(int userId, int deviceId, String access_token, final Callback callback)
+    {
+        String url = unsubscribeUrl.replace("{user_id}", userId+"").replace( "{access_token}", access_token );
+        Map<String, String> params = new HashMap<>();
+        params.put("device_id", deviceId + "");
+        post(url, params, callback);
+    }
+
+    /**
+     * 获取设备信息
+     *
+     * @param deviceId 设备ID
+     */
+    public void getDevice(String productId, int deviceId, String access_token, final Callback callback)
+    {
+        String url = getDeviceUrl.replace("{device_id}", deviceId + "")
+                                 .replace("{product_id}", productId)
+                                 .replace( "{access_token}", access_token );
+        get(url, callback);
+    }
+
+    /**
+     * http //.获取某个用户绑定的设备列表。
+     */
+    public void getSubscribeList(int userId, String access_token, final Callback callback) {
+        String url = subscribeListUrl.replace("{user_id}", userId+"").replace( "{access_token}", access_token );
+        get(url, callback);
+    }
+
+    /**
+     * 删除分享
+     */
+    public void deleteShare(String inviteCode, String access_token, final Callback callback) {
+        String url = deleteShareUrl.replace("{invite_code}", inviteCode).replace( "{access_token}", access_token );
+        delete(url, null, callback);
+    }
 
     /**
      * 非异步线程
