@@ -7,11 +7,10 @@ package com.liruya.xlinkcloudwifi;
 public class Constant
 {
     public static final String COMPANY_ID = "100fa2af5b048600";
+    public static final String SOURCE_ANDROID = "2";
 
-    //用户信息url
-    private static final String host = "http://api2.xlink.cn";
-    public static final String registerUrl = host + "/v2/user_register";
-    public static final String loginUrl = host + "/v2/user_auth";
-    public static final String forgetUrl = host + "/v2/user/password/forgot";
+    public static final String LOCAL_USER_FILENAME = "LOCAL_USER";
+    public static final String LOCAL_USER_EMAIL_KEY = "email";
+    public static final String LOCAL_USER_PASSWORD_KEY = "password";
 
 }

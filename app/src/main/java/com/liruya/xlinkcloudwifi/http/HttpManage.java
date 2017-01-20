@@ -1,5 +1,7 @@
 package com.liruya.xlinkcloudwifi.http;
 
+import com.liruya.xlinkcloudwifi.Constant;
+
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -24,7 +26,7 @@ public class HttpManage
 
     private static final OkHttpClient mOkHttpClent = new OkHttpClient();
 
-    public static String COMPANY_ID = "100fa2af5b048600";
+//    public static String COMPANY_ID = "100fa2af5b048600";
     private final String host = "http://api2.xlink.cn";
     // url
     public final String registerUrl = host + "/v2/user_register";
@@ -71,17 +73,15 @@ public class HttpManage
      * http 邮箱注册接口
      *
      * @param mail 用户 邮箱
-     * @param name 昵称（别名，仅供后台管理平台观看，对用户来说记住uid和pwd就行）
      * @param pwd  密码
      */
-    public void registerUserByMail(String mail, String name, String pwd, Callback callback)
+    public void registerUserByMail(String mail, String pwd, Callback callback)
     {
         Map<String, String> params = new HashMap<>();
         params.put("email", mail);
-        params.put("nickname", name);
-        params.put("corp_id", COMPANY_ID);
+        params.put("corp_id", Constant.COMPANY_ID);
         params.put("password", pwd);
-        params.put("source", "2");
+        params.put( "source", Constant.SOURCE_ANDROID);
         post(registerUrl, params, callback);
     }
 
@@ -95,7 +95,7 @@ public class HttpManage
     {
         Map<String, String> params = new HashMap<>();
         params.put("email", mail);
-        params.put("corp_id", COMPANY_ID);
+        params.put("corp_id", Constant.COMPANY_ID);
         params.put("password", pwd);
         post(loginUrl, params, callback);
     }
@@ -138,7 +138,7 @@ public class HttpManage
     {
         Map<String, String> params = new HashMap<>();
         params.put("email", mail);
-        params.put("corp_id", COMPANY_ID);
+        params.put("corp_id", Constant.COMPANY_ID);
         post(forgetUrl, params, callback);
     }
 
