@@ -1,6 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <!--<color name="colorPrimaryDark">#303F9F</color>-->
+    <!--<color name="colorAccent">#FF4081</color>-->
+
+    <color name="colorPrimary">#673AB7</color>
+    <color name="colorPrimaryDark">#512DA8</color>
+    <color name="colorPrimaryLight">#D1C4E9</color>
+    <color name="colorAccent">#00BCD4</color>
+    <color name="colorTextPrimary">#212121</color>
+    <color name="colorTextSecondory">#757575</color>
+    <color name="colorDivider">#BDBDBD</color>
+    <color name="colorIcon">#FFFFFF</color>
+
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorTransparent">#00000000</color>
+    
+    <color name="colorRed_500">#f44336</color>
+    <color name="colorPink_500">#e91e63</color>
+    <color name="colorPurple_500">#9c27b0</color>
+    <color name="colorDeepPurple_500">#673ab7</color>
+    <color name="colorIndigo_500">#3f51b5</color>
+    <color name="colorBlue_500">#2196f3</color>
+    <color name="colorLightBlue_500">#03a9f4</color>
+    <color name="colorCyan_500">#00bcd4</color>
+    <color name="colorTeal_500">#009688</color>
+    <color name="colorGreen_500">#4caf50</color>
+    <color name="colorLightGreen_500">#8bc34a</color>
+    <color name="colorLime_500">#cddc39</color>
+    <color name="colorYellow_500">#ffeb3b</color>
+    <color name="colorAmber_500">#ffc107</color>
+    <color name="colorOrange_500">#ff9800</color>
+    <color name="colorDeepOrange_500">#ff5722</color>
+    <color name="colorBrown_500">#795548</color>
+    <color name="colorGrey_500">#9e9e9e</color>
+    <color name="colorBlueGrey_500">#607d8b</color>
+
 </resources>

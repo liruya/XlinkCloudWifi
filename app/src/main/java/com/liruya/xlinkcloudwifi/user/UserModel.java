@@ -32,15 +32,15 @@ public class UserModel implements IUserModel
     @Override
     public void saveUserInfo ( UserInfo info )
     {
-        PreferenceUtil.setObjectToPrefer( mContext, Constant.LOCAL_USER_FILENAME, info.getEmail(), Constant.LOCAL_USER_EMAIL_KEY);
-        PreferenceUtil.setObjectToPrefer( mContext, Constant.LOCAL_USER_FILENAME, info.getPassword(), Constant.LOCAL_USER_PASSWORD_KEY );
+        PreferenceUtil.setPrefer( mContext, Constant.LOCAL_USER_FILENAME, info.getEmail(), Constant.LOCAL_USER_EMAIL_KEY );
+        PreferenceUtil.setPrefer( mContext, Constant.LOCAL_USER_FILENAME, info.getPassword(), Constant.LOCAL_USER_PASSWORD_KEY );
     }
 
     @Override
     public void loadUserInfo ( @NonNull LoadUserInfoCallback callback )
     {
-        Object email = PreferenceUtil.getObjectFromPrefer( mContext, Constant.LOCAL_USER_FILENAME, Constant.LOCAL_USER_EMAIL_KEY );
-        Object password = PreferenceUtil.getObjectFromPrefer( mContext, Constant.LOCAL_USER_FILENAME, Constant.LOCAL_USER_PASSWORD_KEY );
+        Object email = PreferenceUtil.getPrefer( mContext, Constant.LOCAL_USER_FILENAME, Constant.LOCAL_USER_EMAIL_KEY, null );
+        Object password = PreferenceUtil.getPrefer( mContext, Constant.LOCAL_USER_FILENAME, Constant.LOCAL_USER_PASSWORD_KEY, null );
         if ( email != null && password != null && email instanceof String && password instanceof String )
         {
             callback.onUserInfoLoaded( new UserInfo( (String) email, Constant.COMPANY_ID, (String) password, Constant.SOURCE_ANDROID ) );

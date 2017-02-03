@@ -9,9 +9,9 @@ public class UserInfo
     private String email;
     private String corp_id;
     private String password;
-    private int source;
+    private String source;
 
-    public UserInfo ( String email, String corp_id, String password, int source )
+    public UserInfo ( String email, String corp_id, String password, String source )
     {
         this.email = email;
         this.corp_id = corp_id;
@@ -56,12 +56,12 @@ public class UserInfo
         this.password = password;
     }
 
-    public int getSource ()
+    public String getSource ()
     {
         return source;
     }
 
-    public void setSource ( int source )
+    public void setSource ( String source )
     {
         this.source = source;
     }

@@ -28,19 +28,22 @@ public class UserPresenter implements UserContract.Presenter
     @Override
     public void registerUser ( UserInfo info, RegisterUserCallback callback )
     {
-        HttpManage.getInstance().registerUserByMail( info.getEmail(), info.getPassword(), new Callback() {
-            @Override
-            public void onFailure ( Call call, IOException e )
-            {
+        HttpManage.getInstance()
+                  .registerUserByMail( info.getEmail(), info.getPassword(), new Callback()
+                  {
+                      @Override
+                      public void onFailure ( Call call, IOException e )
+                      {
 
-            }
+                      }
 
-            @Override
-            public void onResponse ( Call call, Response response ) throws IOException
-            {
-                String json = response.body().string();
-            }
-        } );
+                      @Override
+                      public void onResponse ( Call call, Response response ) throws IOException
+                      {
+                          String json = response.body()
+                                                .string();
+                      }
+                  } );
     }
 
     @Override
@@ -52,25 +55,28 @@ public class UserPresenter implements UserContract.Presenter
     @Override
     public void requestAuthorize ( UserInfo info, RequestAuthorizeCallback callBack )
     {
-        HttpManage.getInstance().login( info.getEmail(), info.getPassword(), new Callback() {
-            @Override
-            public void onFailure ( Call call, IOException e )
-            {
-                
-            }
+        HttpManage.getInstance()
+                  .login( info.getEmail(), info.getPassword(), new Callback()
+                  {
+                      @Override
+                      public void onFailure ( Call call, IOException e )
+                      {
 
-            @Override
-            public void onResponse ( Call call, Response response ) throws IOException
-            {
+                      }
 
-            }
-        } );
+                      @Override
+                      public void onResponse ( Call call, Response response ) throws IOException
+                      {
+
+                      }
+                  } );
     }
 
     @Override
     public void start ()
     {
-        mUserModel.loadUserInfo( new IUserModel.LoadUserInfoCallback() {
+        mUserModel.loadUserInfo( new IUserModel.LoadUserInfoCallback()
+        {
             @Override
             public void onDataNotAvailable ()
             {

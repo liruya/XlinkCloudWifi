@@ -29,8 +29,10 @@ public interface UserContract
 
     interface View extends IBaseView<Presenter>
     {
-        void getEmail();
-        void getPassword();
+        String getEmail();
+        String getPassword();
         void showProgress( boolean show );
+        void showError(HttpError error);
+        void openMainActivity();
     }
 }
