@@ -33,6 +33,7 @@ public interface UserContract
         String getPassword();
         void showProgress( boolean show );
         void showError(HttpError error);
+        void openLoginActivity();
         void openMainActivity();
     }
 }

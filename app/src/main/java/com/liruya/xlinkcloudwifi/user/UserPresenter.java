@@ -1,11 +1,16 @@
 package com.liruya.xlinkcloudwifi.user;
 
+import android.content.Context;
+
+import com.liruya.xlinkcloudwifi.bean.HttpError;
 import com.liruya.xlinkcloudwifi.http.HttpManage;
+import com.liruya.xlinkcloudwifi.util.LogUtil;
 
 import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Headers;
 import okhttp3.Response;
 
 /**
@@ -14,14 +19,18 @@ import okhttp3.Response;
 
 public class UserPresenter implements UserContract.Presenter
 {
-    private UserModel mUserModel;
+    private Context mContext;
     private UserContract.View mView;
 
-    public UserPresenter ( UserModel userModel, UserContract.View view )
+    public UserPresenter ( Context context )
     {
-        mUserModel = userModel;
-        mView = view;
+        mContext = context;
+    }
 
+    public UserPresenter ( Context context, UserContract.View view )
+    {
+        mContext = context;
+        mView = view;
         mView.setPresenter( this );
     }
 
@@ -42,6 +51,7 @@ public class UserPresenter implements UserContract.Presenter
                       {
                           String json = response.body()
                                                 .string();
+                          LogUtil.d( "tag", json );
                       }
                   } );
     }
@@ -49,7 +59,8 @@ public class UserPresenter implements UserContract.Presenter
     @Override
     public void saveUserLocal ( UserInfo info )
     {
-        mUserModel.saveUserInfo( info );
+        UserModel.getInstance( mContext )
+                 .saveUserInfo( info );
     }
 
     @Override
@@ -67,7 +78,9 @@ public class UserPresenter implements UserContract.Presenter
                       @Override
                       public void onResponse ( Call call, Response response ) throws IOException
                       {
-
+                          Headers headers = response.headers();
+                          String json = response.body().toString();
+                          LogUtil.d( "123", headers.name( 0 ) );
                       }
                   } );
     }
@@ -75,19 +88,32 @@ public class UserPresenter implements UserContract.Presenter
     @Override
     public void start ()
     {
-        mUserModel.loadUserInfo( new IUserModel.LoadUserInfoCallback()
-        {
-            @Override
-            public void onDataNotAvailable ()
-            {
+        UserModel.getInstance( mContext )
+                 .loadUserInfo( new IUserModel.LoadUserInfoCallback()
+                 {
+                     @Override
+                     public void onDataNotAvailable ()
+                     {
+                         mView.openLoginActivity();
+                     }
 
-            }
+                     @Override
+                     public void onUserInfoLoaded ( final UserInfo info )
+                     {
+                        requestAuthorize( info, new RequestAuthorizeCallback() {
+                            @Override
+                            public void onRequestSuccess ()
+                            {
+                                UserModel.getInstance( mContext ).saveUserInfo( info );
+                            }
 
-            @Override
-            public void onUserInfoLoaded ( UserInfo info )
-            {
+                            @Override
+                            public void onRequestFailure ( HttpError error )
+                            {
 
-            }
-        } );
+                            }
+                        } );
+                     }
+                 } );
     }
 }

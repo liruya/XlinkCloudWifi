@@ -2,12 +2,14 @@ package com.liruya.xlinkcloudwifi.user;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.liruya.xlinkcloudwifi.Constant;
 import com.liruya.xlinkcloudwifi.R;
 import com.liruya.xlinkcloudwifi.activity.BaseActivity;
 import com.liruya.xlinkcloudwifi.activity.MainActivity;
@@ -34,6 +36,7 @@ public class LoginActivity extends BaseActivity implements UserContract.View
         setContentView( R.layout.activity_login );
 
         initView();
+        initEvent();
     }
 
     @Override
@@ -51,25 +54,47 @@ public class LoginActivity extends BaseActivity implements UserContract.View
     @Override
     protected void initData ()
     {
-        UserModel.getInstance( this ).loadUserInfo( new IUserModel.LoadUserInfoCallback() {
-            @Override
-            public void onDataNotAvailable ()
-            {
-
-            }
-
-            @Override
-            public void onUserInfoLoaded ( UserInfo info )
-            {
-
-            }
-        } );
     }
 
     @Override
     protected void initEvent ()
     {
+        login_btn_signup.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick ( View view )
+            {
+                String email = getEmail();
+                String password = getPassword();
+                if ( isValidEmail( email ) && isValidPassword( password) )
+                {
+                    mPresenter.registerUser( new UserInfo( email, Constant.COMPANY_ID, password ), new UserContract.Presenter.RegisterUserCallback() {
+                        @Override
+                        public void onRegisterSuccess ()
+                        {
 
+                        }
+
+                        @Override
+                        public void onRegisterFailure ( HttpError error )
+                        {
+
+                        }
+                    } );
+                }
+            }
+        } );
+
+        login_btn_signin.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick ( View view )
+            {
+                String email = getEmail();
+                String password = getPassword();
+                if ( isValidEmail( email ) && isValidPassword( password ) )
+                {
+                }
+            }
+        } );
     }
 
     @Override
@@ -104,6 +129,12 @@ public class LoginActivity extends BaseActivity implements UserContract.View
     }
 
     @Override
+    public void openLoginActivity ()
+    {
+
+    }
+
+    @Override
     public void openMainActivity ()
     {
         finish();
@@ -115,5 +146,19 @@ public class LoginActivity extends BaseActivity implements UserContract.View
     public void setPresenter ( UserContract.Presenter presenter )
     {
         mPresenter = presenter;
+    }
+
+    private boolean isValidEmail( String email )
+    {
+        if ( TextUtils.isEmpty( email ) )
+        {
+            return false;
+        }
+        return android.util.Patterns.EMAIL_ADDRESS.matcher( email ).matches();
+    }
+
+    private boolean isValidPassword( String password )
+    {
+        return !TextUtils.isEmpty( password ) && (password.length() > 6);
     }
 }

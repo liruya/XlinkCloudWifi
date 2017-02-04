@@ -12,20 +12,15 @@ public class LoginInfo
     private int expire_in;
     private String authorize;
 
-    public LoginInfo ( long user_id, String access_token, String refresh_token, int expire_in, String authorize )
-    {
-        this.user_id = user_id;
-        this.access_token = access_token;
-        this.refresh_token = refresh_token;
-        this.expire_in = expire_in;
-        this.authorize = authorize;
-    }
+    private static LoginInfo instance = null;
 
-    public LoginInfo ( long user_id, String access_token, String authorize )
+    public static LoginInfo getInstance()
     {
-        this.user_id = user_id;
-        this.access_token = access_token;
-        this.authorize = authorize;
+        if ( instance == null )
+        {
+            instance = new LoginInfo();
+        }
+        return instance;
     }
 
     public long getUser_id ()

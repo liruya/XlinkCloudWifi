@@ -4,7 +4,14 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.liruya.xlinkcloudwifi.Constant;
+import com.liruya.xlinkcloudwifi.http.HttpManage;
 import com.liruya.xlinkcloudwifi.util.PreferenceUtil;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 /**
  * Created by liruya on 2017/1/20.
@@ -49,5 +56,23 @@ public class UserModel implements IUserModel
         {
             callback.onDataNotAvailable();
         }
+    }
+
+    @Override
+    public void loginUser ( UserInfo info, @NonNull final LoginCallBack callBack )
+    {
+        HttpManage.getInstance().login( info.getEmail(), info.getPassword(), new Callback() {
+            @Override
+            public void onFailure ( Call call, IOException e )
+            {
+
+            }
+
+            @Override
+            public void onResponse ( Call call, Response response ) throws IOException
+            {
+
+            }
+        } );
     }
 }

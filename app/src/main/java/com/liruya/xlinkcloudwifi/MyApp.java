@@ -2,6 +2,13 @@ package com.liruya.xlinkcloudwifi;
 
 import android.app.Application;
 
+import com.liruya.xlinkcloudwifi.bean.HttpError;
+import com.liruya.xlinkcloudwifi.bean.LoginInfo;
+import com.liruya.xlinkcloudwifi.user.IUserModel;
+import com.liruya.xlinkcloudwifi.user.UserInfo;
+import com.liruya.xlinkcloudwifi.user.UserModel;
+import com.liruya.xlinkcloudwifi.user.UserPresenter;
+
 import java.util.List;
 
 import io.xlink.wifi.sdk.XDevice;
@@ -16,6 +23,11 @@ import io.xlink.wifi.sdk.listener.XlinkNetListener;
 
 public class MyApp extends Application implements XlinkNetListener
 {
+    private int user_id;
+    private String authkey;
+    private String accessToken;
+    private UserPresenter mPresenter;
+
     @Override
     public void onCreate ()
     {
@@ -23,6 +35,31 @@ public class MyApp extends Application implements XlinkNetListener
 //        初始化Xlink SDK
         XlinkAgent.init( this );
         XlinkAgent.getInstance().addXlinkListener( this );
+        UserModel.getInstance( this ).loadUserInfo( new IUserModel.LoadUserInfoCallback() {
+            @Override
+            public void onDataNotAvailable ()
+            {
+
+            }
+
+            @Override
+            public void onUserInfoLoaded ( UserInfo info )
+            {
+                UserModel.getInstance( getApplicationContext() ).loginUser( info, new IUserModel.LoginCallBack() {
+                    @Override
+                    public void onLoginFailure ( HttpError error )
+                    {
+
+                    }
+
+                    @Override
+                    public void onLoginSuccess ( LoginInfo info )
+                    {
+
+                    }
+                } );
+            }
+        } );
     }
 
     @Override
